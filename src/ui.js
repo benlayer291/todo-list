@@ -1,4 +1,4 @@
-import { loadTasks, saveTasks, addTask } from './tasks.js';
+import { loadTasks, saveTasks, addTask, removeTask } from './tasks.js';
 
 function createTaskItem(task) {
   const item = document.createElement('li');
@@ -14,7 +14,12 @@ function createTaskItem(task) {
   text.className = 'task-text';
   text.textContent = task.text;
 
-  item.append(toggle, text);
+  const remove = document.createElement('button');
+  remove.type = 'button';
+  remove.className = 'remove';
+  remove.textContent = 'Remove';
+
+  item.append(toggle, text, remove);
   return item;
 }
 
@@ -37,5 +42,13 @@ export function mountApp(root) {
     saveTasks(tasks);
     renderTasks(tasks, root);
     input.value = '';
+  });
+
+  root.addEventListener('click', (event) => {
+    if (!event.target.matches('.remove')) return;
+    const id = event.target.closest('li').dataset.id;
+    tasks = removeTask(tasks, id);
+    saveTasks(tasks);
+    renderTasks(tasks, root);
   });
 }

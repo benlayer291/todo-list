@@ -157,3 +157,30 @@ describe('add task interaction', () => {
     expect(loadTasks()).toHaveLength(2);
   });
 });
+
+describe('remove task interaction', () => {
+  it('removes a task from the list and from storage when its control is clicked', () => {
+    saveTasks([{ id: 'a', text: 'Buy milk', done: false }]);
+    const { root } = makeShell();
+    mountApp(root);
+    root.querySelector('li[data-id="a"] .remove').click();
+    expect(root.querySelectorAll('li')).toHaveLength(0);
+    expect(loadTasks()).toHaveLength(0);
+  });
+
+  it('removes only the targeted task, leaving the rest intact', () => {
+    saveTasks([
+      { id: 'a', text: 'Buy milk', done: false },
+      { id: 'b', text: 'Call Sam', done: true },
+      { id: 'c', text: 'Book dentist', done: false },
+    ]);
+    const { root } = makeShell();
+    mountApp(root);
+    root.querySelector('li[data-id="b"] .remove').click();
+    const remaining = loadTasks();
+    expect(remaining.map((task) => task.id)).toEqual(['a', 'c']);
+    expect(root.querySelector('li[data-id="b"]')).toBeNull();
+    expect(root.querySelector('li[data-id="a"]')).not.toBeNull();
+    expect(root.querySelector('li[data-id="c"]')).not.toBeNull();
+  });
+});

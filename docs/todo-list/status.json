@@ -46,44 +46,54 @@
       "completed_at": "2026-06-30T17:57:21.675Z"
     },
     "planning-breakdown": {
-      "state": "in_progress",
+      "state": "complete",
       "phase": "Planning",
-      "last_write": "tasks/07-toggle-task.output.md",
-      "last_write_at": "2026-06-30T18:16:21.503Z",
-      "task_id": null,
-      "started_at": "2026-06-30T18:00:32.254Z"
+      "completed_at": "2026-06-30T19:29:45.614Z",
+      "inferred_from": "manual-fix"
     },
     "delivery-context": {
       "state": "complete",
       "phase": "Delivery",
       "last_write": "context.output.md",
-      "last_write_at": "2026-06-30T19:18:04.610Z",
+      "last_write_at": "2026-06-30T19:29:14.014Z",
       "task_id": null,
-      "completed_at": "2026-06-30T19:18:04.610Z"
+      "completed_at": "2026-06-30T19:29:14.014Z"
     },
     "delivery-build": {
       "state": "in_progress",
       "phase": "Delivery",
       "last_write": "features/todo-list/README.md",
-      "last_write_at": "2026-06-30T19:20:08.071Z",
+      "last_write_at": "2026-06-30T19:30:54.412Z",
       "started_at": "2026-06-30T18:28:43.432Z",
       "task_id": null
     },
     "delivery-checklist": {
       "state": "complete",
       "phase": "Delivery",
-      "last_write": "tasks/04-ENG-355-checklist.output.md",
-      "last_write_at": "2026-06-30T19:22:49.187Z",
+      "last_write": "tasks/05-ENG-356-checklist.output.md",
+      "last_write_at": "2026-06-30T19:33:05.087Z",
       "task_id": "ENG-353",
-      "completed_at": "2026-06-30T19:22:49.187Z"
+      "completed_at": "2026-06-30T19:33:05.087Z"
     },
     "review-qa": {
       "state": "in_progress",
       "phase": "Review",
       "last_write": "qa.output.md",
-      "last_write_at": "2026-06-30T19:16:35.184Z",
+      "last_write_at": "2026-06-30T19:28:05.431Z",
       "task_id": null,
       "started_at": "2026-06-30T18:44:02.272Z"
+    },
+    "planning-estimate": {
+      "state": "complete",
+      "phase": "Planning",
+      "completed_at": "2026-06-30T19:29:45.614Z",
+      "inferred_from": "manual-fix"
+    },
+    "planning-sequence": {
+      "state": "complete",
+      "phase": "Planning",
+      "completed_at": "2026-06-30T19:29:45.614Z",
+      "inferred_from": "manual-fix"
     }
   },
   "gates": {

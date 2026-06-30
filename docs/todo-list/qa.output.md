@@ -2,7 +2,7 @@
 
 **Linear:** https://linear.app/rotate/project/todo-list-737f7d905efa
 **Date:** 2026-06-30
-**Run type:** Task-level (latest run: after ENG-354 merged)
+**Run type:** Task-level (latest run: after ENG-355 merged)
 **Tester:** Claude Code
 
 > Living document — updated after every task-level run. ENG-352 (scaffold) and ENG-353 (pure data layer) own no end-to-end PRD user-story scenario; those become testable once the UI tasks (ENG-354+) land. All six story scenarios remain pending.
@@ -30,9 +30,9 @@
 **Result:** Pass — verified by `renderTasks`/`mountApp` jsdom tests (text + done state + data-id; empty list renders cleanly) and a screenshot of the rendered app shell. End-to-end reload-restores-tasks confirmed on the read side (`mountApp` loads persisted tasks); write side via UI pending ENG-355+.
 
 ### Story: Add a task
-**Scenario:** Adding a task — **Owned by task:** ENG-355 — pending
-**Scenario:** Empty input is rejected — **Owned by task:** ENG-355 — pending
-**Result:** Pending — not tested (ENG-355 not merged)
+**Scenario:** Adding a task — **Owned by task:** ENG-355 — merged ✅
+**Scenario:** Empty input is rejected — **Owned by task:** ENG-355 — merged ✅
+**Result:** Pass — verified by 5 add-interaction jsdom tests (adds not-done task, clears input, persists, rejects empty/whitespace, appends across adds) and a real-browser CDP screenshot of three tasks added through the UI.
 
 ### Story: Remove a task
 **Scenario:** Removing a task — **Owned by task:** ENG-356 — pending
@@ -48,8 +48,8 @@
 **Result:** Pending — not tested (ENG-358 not merged)
 
 ### Story: Persistence across sessions
-**Scenario:** Tasks survive reload — **Owned by:** ENG-353 (storage I/O ✅ merged, unit-verified) + ENG-354+ (UI wiring) — pending end-to-end
-**Result:** Pending — storage I/O merged and unit-verified; end-to-end reload behaviour not testable until UI wires save/load (ENG-354+)
+**Scenario:** Tasks survive reload — **Owned by:** ENG-353 (storage I/O) + ENG-354 (load/render) + ENG-355 (add writes) — merged ✅ for the add path
+**Result:** Pass (add path) — verified end-to-end: adding a task writes to `localStorage` ("persists the added task" test) and `mountApp` restores it on reload (`mountApp` load test). Remove/edit/toggle persistence verified as those tasks land (ENG-356–358).
 
 ---
 

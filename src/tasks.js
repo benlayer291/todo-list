@@ -13,3 +13,13 @@ export function loadTasks() {
 export function saveTasks(tasks) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 }
+
+export function addTask(tasks, text) {
+  const trimmed = text.trim();
+  if (trimmed === '') return tasks;
+  return [...tasks, { id: crypto.randomUUID(), text: trimmed, done: false }];
+}
+
+export function removeTask(tasks, id) {
+  return tasks.filter((task) => task.id !== id);
+}

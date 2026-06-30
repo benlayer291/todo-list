@@ -23,3 +23,13 @@ export function addTask(tasks, text) {
 export function removeTask(tasks, id) {
   return tasks.filter((task) => task.id !== id);
 }
+
+export function editTask(tasks, id, text) {
+  const trimmed = text.trim();
+  if (trimmed === '') return tasks;
+  return tasks.map((task) => (task.id === id ? { ...task, text: trimmed } : task));
+}
+
+export function toggleTask(tasks, id) {
+  return tasks.map((task) => (task.id === id ? { ...task, done: !task.done } : task));
+}

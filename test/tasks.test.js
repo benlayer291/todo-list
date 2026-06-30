@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { STORAGE_KEY, loadTasks, saveTasks, addTask, removeTask } from '../src/tasks.js';
+import {
+  STORAGE_KEY,
+  loadTasks,
+  saveTasks,
+  addTask,
+  removeTask,
+  editTask,
+  toggleTask,
+} from '../src/tasks.js';
 
 describe('persistence', () => {
   it('loads an empty list when nothing is stored', () => {
@@ -60,5 +68,60 @@ describe('removeTask', () => {
     const tasks = [{ id: 'a', text: 'x', done: false }];
     removeTask(tasks, 'a');
     expect(tasks).toHaveLength(1);
+  });
+});
+
+describe('editTask', () => {
+  it('replaces only the matching task text, leaving done unchanged', () => {
+    const tasks = [
+      { id: 'a', text: 'Buy milk', done: true },
+      { id: 'b', text: 'Call Sam', done: false },
+    ];
+    expect(editTask(tasks, 'a', 'Buy oat milk')).toEqual([
+      { id: 'a', text: 'Buy oat milk', done: true },
+      { id: 'b', text: 'Call Sam', done: false },
+    ]);
+  });
+
+  it('trims the new text', () => {
+    const tasks = [{ id: 'a', text: 'x', done: false }];
+    expect(editTask(tasks, 'a', '  y  ')[0].text).toBe('y');
+  });
+
+  it('leaves the task unchanged when the new text is empty or whitespace', () => {
+    const tasks = [{ id: 'a', text: 'x', done: false }];
+    expect(editTask(tasks, 'a', '   ')).toEqual(tasks);
+  });
+
+  it('does not mutate the input array', () => {
+    const tasks = [{ id: 'a', text: 'x', done: false }];
+    editTask(tasks, 'a', 'y');
+    expect(tasks[0].text).toBe('x');
+  });
+});
+
+describe('toggleTask', () => {
+  it('flips a not-done task to done', () => {
+    const tasks = [{ id: 'a', text: 'x', done: false }];
+    expect(toggleTask(tasks, 'a')).toEqual([{ id: 'a', text: 'x', done: true }]);
+  });
+
+  it('flips a done task to not-done', () => {
+    const tasks = [{ id: 'a', text: 'x', done: true }];
+    expect(toggleTask(tasks, 'a')).toEqual([{ id: 'a', text: 'x', done: false }]);
+  });
+
+  it('only flips the matching task', () => {
+    const tasks = [
+      { id: 'a', text: 'x', done: false },
+      { id: 'b', text: 'y', done: false },
+    ];
+    expect(toggleTask(tasks, 'a')[1].done).toBe(false);
+  });
+
+  it('does not mutate the input array', () => {
+    const tasks = [{ id: 'a', text: 'x', done: false }];
+    toggleTask(tasks, 'a');
+    expect(tasks[0].done).toBe(false);
   });
 });

@@ -1,11 +1,34 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { renderTasks, mountApp } from '../src/ui.js';
-import { saveTasks } from '../src/tasks.js';
+import { saveTasks, loadTasks } from '../src/tasks.js';
+
+beforeEach(() => {
+  document.body.innerHTML = '';
+});
 
 function makeRoot() {
   const ul = document.createElement('ul');
   document.body.append(ul);
   return ul;
+}
+
+function makeShell() {
+  document.body.innerHTML = `
+    <form id="add-task-form">
+      <input id="new-task-input" type="text" />
+      <button id="add-task-btn" type="submit">Add</button>
+    </form>
+    <ul id="task-list"></ul>
+  `;
+  return {
+    root: document.querySelector('#task-list'),
+    input: document.querySelector('#new-task-input'),
+    form: document.querySelector('#add-task-form'),
+  };
+}
+
+function submit(form) {
+  form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
 }
 
 describe('renderTasks', () => {
@@ -71,7 +94,7 @@ describe('renderTasks', () => {
 describe('mountApp', () => {
   it('loads persisted tasks and renders them', () => {
     saveTasks([{ id: 'a', text: 'Buy milk', done: true }]);
-    const root = makeRoot();
+    const { root } = makeShell();
     mountApp(root);
     const item = root.querySelector('li');
     expect(item.textContent).toContain('Buy milk');
@@ -79,8 +102,58 @@ describe('mountApp', () => {
   });
 
   it('renders nothing when there are no persisted tasks', () => {
-    const root = makeRoot();
+    const { root } = makeShell();
     mountApp(root);
     expect(root.querySelectorAll('li')).toHaveLength(0);
+  });
+});
+
+describe('add task interaction', () => {
+  it('adds a not-done task from the input on submit', () => {
+    const { root, input, form } = makeShell();
+    mountApp(root);
+    input.value = 'Buy milk';
+    submit(form);
+    const items = root.querySelectorAll('li');
+    expect(items).toHaveLength(1);
+    expect(items[0].textContent).toContain('Buy milk');
+    expect(items[0].classList.contains('done')).toBe(false);
+  });
+
+  it('clears the input after adding', () => {
+    const { root, input, form } = makeShell();
+    mountApp(root);
+    input.value = 'Buy milk';
+    submit(form);
+    expect(input.value).toBe('');
+  });
+
+  it('persists the added task', () => {
+    const { root, input, form } = makeShell();
+    mountApp(root);
+    input.value = 'Buy milk';
+    submit(form);
+    expect(loadTasks()).toHaveLength(1);
+    expect(loadTasks()[0].text).toBe('Buy milk');
+  });
+
+  it('adds nothing when the input is empty or whitespace', () => {
+    const { root, input, form } = makeShell();
+    mountApp(root);
+    input.value = '   ';
+    submit(form);
+    expect(root.querySelectorAll('li')).toHaveLength(0);
+    expect(loadTasks()).toHaveLength(0);
+  });
+
+  it('appends to existing tasks across multiple adds', () => {
+    const { root, input, form } = makeShell();
+    mountApp(root);
+    input.value = 'Buy milk';
+    submit(form);
+    input.value = 'Call Sam';
+    submit(form);
+    expect(root.querySelectorAll('li')).toHaveLength(2);
+    expect(loadTasks()).toHaveLength(2);
   });
 });

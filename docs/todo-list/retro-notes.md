@@ -64,6 +64,23 @@ happened → recommended skill change.
     this in `delivery-pr` as the standard way to satisfy the "visual evidence
     required for UI tasks" rule. (Adopted at ENG-354.)
 
+## Linear project & issue lifecycle (not managed by skills)
+14. **Project status never advances.** It was created "Inactive" and stayed there
+    through planning and delivery. The intended lifecycle is **inactive (creation)
+    → shaping (during shaping phase) → planned (planning complete, pre-delivery) →
+    delivery (delivery underway) → completed (all tasks done)**. → Skills should
+    set project status: `shaping-prd` → shaping; final planning checkpoint
+    (`planning-sequence` approved) → planned; first `delivery-context` → delivery;
+    project-level `review-qa`/`review-retro` → completed. Fixed manually mid-run.
+15. **Project not assigned a lead.** Should be assigned to the human (project
+    lead). → `shaping-prd` should set the project lead (default: the human running
+    the workflow, or ask). Fixed manually.
+16. **Issues created in "Backlog" and unassigned.** Once planned and ready for
+    delivery, issues should be **"Todo"** and **assigned to the human** (unless
+    stated otherwise). → `planning-breakdown` (or `planning-sequence` on approval)
+    should create/transition issues to Todo and set the assignee. Fixed manually
+    (assigned all 7 to the human; moved the unstarted ENG-358 Backlog → Todo).
+
 ## Sequencing artifacts
 13. **ENG-352 `index.html` references `src/main.js` (owned by ENG-354)** → so
     `npm run build` fails between ENG-352 and ENG-354 (dev + tests still pass).

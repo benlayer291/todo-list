@@ -55,31 +55,31 @@
       "state": "complete",
       "phase": "Delivery",
       "last_write": "context.output.md",
-      "last_write_at": "2026-06-30T19:29:14.014Z",
+      "last_write_at": "2026-06-30T19:36:54.420Z",
       "task_id": null,
-      "completed_at": "2026-06-30T19:29:14.014Z"
+      "completed_at": "2026-06-30T19:36:54.420Z"
     },
     "delivery-build": {
       "state": "in_progress",
       "phase": "Delivery",
       "last_write": "features/todo-list/README.md",
-      "last_write_at": "2026-06-30T19:30:54.412Z",
+      "last_write_at": "2026-06-30T19:38:55.462Z",
       "started_at": "2026-06-30T18:28:43.432Z",
       "task_id": null
     },
     "delivery-checklist": {
       "state": "complete",
       "phase": "Delivery",
-      "last_write": "tasks/05-ENG-356-checklist.output.md",
-      "last_write_at": "2026-06-30T19:33:05.087Z",
+      "last_write": "tasks/06-ENG-357-checklist.output.md",
+      "last_write_at": "2026-06-30T19:45:01.350Z",
       "task_id": "ENG-353",
-      "completed_at": "2026-06-30T19:33:05.087Z"
+      "completed_at": "2026-06-30T19:45:01.350Z"
     },
     "review-qa": {
       "state": "in_progress",
       "phase": "Review",
       "last_write": "qa.output.md",
-      "last_write_at": "2026-06-30T19:28:05.431Z",
+      "last_write_at": "2026-06-30T19:35:21.727Z",
       "task_id": null,
       "started_at": "2026-06-30T18:44:02.272Z"
     },

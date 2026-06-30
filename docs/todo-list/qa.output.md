@@ -2,7 +2,7 @@
 
 **Linear:** https://linear.app/rotate/project/todo-list-737f7d905efa
 **Date:** 2026-06-30
-**Run type:** Task-level (latest run: after ENG-355 merged)
+**Run type:** Task-level (latest run: after ENG-356 merged)
 **Tester:** Claude Code
 
 > Living document — updated after every task-level run. ENG-352 (scaffold) and ENG-353 (pure data layer) own no end-to-end PRD user-story scenario; those become testable once the UI tasks (ENG-354+) land. All six story scenarios remain pending.
@@ -35,8 +35,8 @@
 **Result:** Pass — verified by 5 add-interaction jsdom tests (adds not-done task, clears input, persists, rejects empty/whitespace, appends across adds) and a real-browser CDP screenshot of three tasks added through the UI.
 
 ### Story: Remove a task
-**Scenario:** Removing a task — **Owned by task:** ENG-356 — pending
-**Result:** Pending — not tested (ENG-356 not merged)
+**Scenario:** Removing a task — **Owned by task:** ENG-356 — merged ✅
+**Result:** Pass — verified by remove-interaction jsdom tests (removes from list + localStorage; removes only the targeted task of three, leaving others and done states intact) and a real-browser CDP screenshot (added 3, removed the middle).
 
 ### Story: Edit a task's text
 **Scenario:** Editing task text — **Owned by task:** ENG-357 — pending

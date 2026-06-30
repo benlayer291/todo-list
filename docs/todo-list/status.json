@@ -3,7 +3,7 @@
   "slug": "todo-list",
   "started_at": "2026-06-30T17:19:30.678Z",
   "current_phase": "Review",
-  "current_skill": "review-qa",
+  "current_skill": null,
   "skills": {
     "discovery-interview": {
       "state": "complete",
@@ -94,13 +94,22 @@
       "phase": "Planning",
       "completed_at": "2026-06-30T19:29:45.614Z",
       "inferred_from": "manual-fix"
+    },
+    "review-retro": {
+      "state": "complete",
+      "phase": "Review",
+      "last_write": "retro.output.md",
+      "last_write_at": "2026-06-30T20:13:06.001Z",
+      "task_id": null,
+      "completed_at": "2026-06-30T20:13:06.001Z"
     }
   },
   "gates": {
     "1": true,
     "2": true,
     "3": true,
-    "4": true
+    "4": true,
+    "10": true
   },
   "history": [
     {
@@ -165,6 +174,13 @@
       "at": "2026-06-30T19:05:46.698Z",
       "task_id": null,
       "file": "tasks/03-ENG-354-checklist.output.md"
+    },
+    {
+      "skill": "review-retro",
+      "state": "complete",
+      "at": "2026-06-30T20:09:06.641Z",
+      "task_id": null,
+      "file": "retro.output.md"
     }
   ]
 }

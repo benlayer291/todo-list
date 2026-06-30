@@ -1,6 +1,6 @@
 # Todo list
 
-**Last updated:** 2026-06-30 — ENG-356
+**Last updated:** 2026-06-30 — ENG-357
 **Status:** In progress
 
 ---
@@ -8,7 +8,7 @@
 ## What it is
 A single-user, client-side todo list. The user can view their tasks (each with a text label and a done/not-done state) in the browser, with tasks persisted locally so they survive a reload. The full feature offers five actions — view, add, remove, edit text, and toggle done — delivered incrementally across tasks.
 
-As of ENG-356, **view**, **add**, and **remove** are implemented: the app loads and renders persisted tasks, the user can add a new (not-done) task via the form, and remove any task via its per-row Remove control. Edit/toggle land in ENG-357–358.
+As of ENG-357, **view**, **add**, **remove**, and **edit** are implemented: the app loads and renders persisted tasks, the user can add a new (not-done) task via the form, remove any task via its per-row Remove control, and edit a task's text by double-clicking it. Toggle lands in ENG-358.
 
 ---
 
@@ -31,7 +31,7 @@ Container/presentation split with a pure data core:
 - `index.html` — static shell: heading, add form, and `#task-list` render root (ENG-352).
 
 **Data flow:**
-On load, `mountApp` calls `loadTasks()` (reads `localStorage['todo-list.tasks']`, `[]` if absent/invalid) and `renderTasks` paints one `<li>` per task into `#task-list`. `mountApp` holds the current list in scope; a user action calls a pure operation → `saveTasks` → full re-render. As of ENG-355 the add form's `submit` is wired: `addTask(tasks, input.value)` → persist → re-render → clear input (empty/whitespace rejected by `addTask`). As of ENG-356, removal is wired via a single delegated `click` listener on the root: a `.remove` button click → read the row's `data-id` → `removeTask` → persist → re-render.
+On load, `mountApp` calls `loadTasks()` (reads `localStorage['todo-list.tasks']`, `[]` if absent/invalid) and `renderTasks` paints one `<li>` per task into `#task-list`. `mountApp` holds the current list in scope; a user action calls a pure operation → `saveTasks` → full re-render. As of ENG-355 the add form's `submit` is wired: `addTask(tasks, input.value)` → persist → re-render → clear input (empty/whitespace rejected by `addTask`). As of ENG-356, removal is wired via a single delegated `click` listener on the root: a `.remove` button click → read the row's `data-id` → `removeTask` → persist → re-render. As of ENG-357, editing is wired via a delegated `dblclick`: double-clicking a `.task-text` swaps it for a transient input; on blur/Enter → `editTask(id, value)` → persist → re-render (Escape cancels; empty text rejected by `editTask`).
 
 **Key functions:**
 - `renderTasks(tasks, root)` in `src/ui.js` — clears the root and rebuilds one `<li>` per task (text via `textContent`, done state via a checkbox + `done` class, row tagged with `data-id`).
@@ -86,7 +86,7 @@ Then the task list is empty and no error occurs
 ---
 
 ## Known limitations
-- View + add + remove as of ENG-356 — edit/toggle are not yet wired (ENG-357–358).
+- View + add + remove + edit as of ENG-357 — toggle is not yet wired (ENG-358).
 - The per-row checkbox reflects done state but is not yet interactive (toggle wiring lands in ENG-358).
 - Single user, single browser; no accounts, sharing, or cross-device sync.
 - Out of scope (PRD): due dates, priorities, multiple lists, tags, filtering/sorting, search, reordering.
@@ -111,3 +111,4 @@ Then the task list is empty and no error occurs
 | 2026-06-30 | ENG-354 | Created — view/render layer (`renderTasks`, `mountApp`, bootstrap) and feature docs |
 | 2026-06-30 | ENG-355 | Add action — wired the add form (`addTask` → persist → re-render → clear input) |
 | 2026-06-30 | ENG-356 | Remove action — per-row Remove control via delegated click (`removeTask` → persist → re-render) |
+| 2026-06-30 | ENG-357 | Edit action — double-click to edit text via delegated dblclick (`editTask` → persist → re-render; Escape cancels) |

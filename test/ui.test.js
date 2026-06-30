@@ -184,3 +184,65 @@ describe('remove task interaction', () => {
     expect(root.querySelector('li[data-id="c"]')).not.toBeNull();
   });
 });
+
+describe('edit task interaction', () => {
+  function startEdit(root, id) {
+    root
+      .querySelector(`li[data-id="${id}"] .task-text`)
+      .dispatchEvent(new MouseEvent('dblclick', { bubbles: true }));
+    return root.querySelector(`li[data-id="${id}"] .edit-input`);
+  }
+
+  it('turns the text into an input on double-click', () => {
+    saveTasks([{ id: 'a', text: 'Buy milk', done: false }]);
+    const { root } = makeShell();
+    mountApp(root);
+    const input = startEdit(root, 'a');
+    expect(input).not.toBeNull();
+    expect(input.value).toBe('Buy milk');
+  });
+
+  it('commits the new text on blur, in place, without duplicating', () => {
+    saveTasks([{ id: 'a', text: 'Buy milk', done: true }]);
+    const { root } = makeShell();
+    mountApp(root);
+    const input = startEdit(root, 'a');
+    input.value = 'Buy oat milk';
+    input.dispatchEvent(new Event('blur'));
+    expect(root.querySelectorAll('li')).toHaveLength(1);
+    expect(root.querySelector('li[data-id="a"] .task-text').textContent).toBe('Buy oat milk');
+    expect(loadTasks()).toEqual([{ id: 'a', text: 'Buy oat milk', done: true }]);
+  });
+
+  it('commits on Enter', () => {
+    saveTasks([{ id: 'a', text: 'Buy milk', done: false }]);
+    const { root } = makeShell();
+    mountApp(root);
+    const input = startEdit(root, 'a');
+    input.value = 'Buy oat milk';
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(loadTasks()[0].text).toBe('Buy oat milk');
+  });
+
+  it('leaves the task unchanged when committed text is empty', () => {
+    saveTasks([{ id: 'a', text: 'Buy milk', done: false }]);
+    const { root } = makeShell();
+    mountApp(root);
+    const input = startEdit(root, 'a');
+    input.value = '   ';
+    input.dispatchEvent(new Event('blur'));
+    expect(root.querySelector('li[data-id="a"] .task-text').textContent).toBe('Buy milk');
+    expect(loadTasks()[0].text).toBe('Buy milk');
+  });
+
+  it('cancels the edit on Escape without changing the task', () => {
+    saveTasks([{ id: 'a', text: 'Buy milk', done: false }]);
+    const { root } = makeShell();
+    mountApp(root);
+    const input = startEdit(root, 'a');
+    input.value = 'Discarded';
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    expect(root.querySelector('li[data-id="a"] .task-text').textContent).toBe('Buy milk');
+    expect(loadTasks()[0].text).toBe('Buy milk');
+  });
+});

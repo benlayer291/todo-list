@@ -1,4 +1,4 @@
-import { loadTasks, saveTasks, addTask, removeTask } from './tasks.js';
+import { loadTasks, saveTasks, addTask, removeTask, editTask } from './tasks.js';
 
 function createTaskItem(task) {
   const item = document.createElement('li');
@@ -51,4 +51,34 @@ export function mountApp(root) {
     saveTasks(tasks);
     renderTasks(tasks, root);
   });
+
+  root.addEventListener('dblclick', (event) => {
+    if (!event.target.matches('.task-text')) return;
+    startEditing(event.target);
+  });
+
+  function startEditing(textSpan) {
+    const id = textSpan.closest('li').dataset.id;
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'edit-input';
+    input.value = textSpan.textContent;
+    textSpan.replaceWith(input);
+    input.focus();
+
+    let done = false;
+    const finish = (commit) => {
+      if (done) return;
+      done = true;
+      if (commit) tasks = editTask(tasks, id, input.value);
+      saveTasks(tasks);
+      renderTasks(tasks, root);
+    };
+
+    input.addEventListener('blur', () => finish(true));
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') input.blur();
+      else if (event.key === 'Escape') finish(false);
+    });
+  }
 }

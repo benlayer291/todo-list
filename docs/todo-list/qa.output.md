@@ -2,17 +2,22 @@
 
 **Linear:** https://linear.app/rotate/project/todo-list-737f7d905efa
 **Date:** 2026-06-30
-**Run type:** Task-level (after ENG-352 merged)
+**Run type:** Task-level (latest run: after ENG-353 merged)
 **Tester:** Claude Code
 
-> Living document — updated after every task-level run. ENG-352 is a scaffold chore and owns no PRD user-story scenarios; all six story scenarios remain pending until their owning tasks merge.
+> Living document — updated after every task-level run. ENG-352 (scaffold) and ENG-353 (pure data layer) own no end-to-end PRD user-story scenario; those become testable once the UI tasks (ENG-354+) land. All six story scenarios remain pending.
 
 ---
 
 ## Scaffold sanity (ENG-352 — merged)
-- [x] `npm test` passes on merged `main` — 3/3 (jsdom DOM, localStorage round-trip, cleared between tests).
-- [x] App shell served by `npm run dev` with heading, add input+button, empty task list (verified pre-merge).
-- [x] No PRD user-story behaviour expected yet.
+- [x] `npm test` passes on merged `main`.
+- [x] App shell served by `npm run dev` with heading, add input+button, empty task list.
+**Result:** Pass
+
+## Data layer sanity (ENG-353 — merged)
+- [x] `npm test` passes on merged `main` — 20/20 (17 tasks-module tests + 3 smoke).
+- [x] Pure operations (add/remove/edit/toggle) + persistence (load/save) verified at unit level, including immutability and invalid-JSON load.
+- [x] No end-to-end PRD scenario testable yet — persistence/behaviour surfaces through the UI tasks (ENG-354+).
 **Result:** Pass
 
 ---
@@ -43,8 +48,8 @@
 **Result:** Pending — not tested (ENG-358 not merged)
 
 ### Story: Persistence across sessions
-**Scenario:** Tasks survive reload — **Owned by:** ENG-353 (storage I/O) + ENG-354+ (UI) — pending
-**Result:** Pending — not tested (owning tasks not merged)
+**Scenario:** Tasks survive reload — **Owned by:** ENG-353 (storage I/O ✅ merged, unit-verified) + ENG-354+ (UI wiring) — pending end-to-end
+**Result:** Pending — storage I/O merged and unit-verified; end-to-end reload behaviour not testable until UI wires save/load (ENG-354+)
 
 ---
 

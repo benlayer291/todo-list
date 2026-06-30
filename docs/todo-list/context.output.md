@@ -1,139 +1,156 @@
-# Task Context: ENG-353 — [feature] Task-data module with localStorage persistence
+# Task Context: ENG-354 — [feature] Render and view the task list
 
-**Generated:** 2026-06-30 18:45 UTC
-**Task file:** `docs/todo-list/tasks/02-ENG-353-task-data-module.output.md`
-**Linear:** https://linear.app/rotate/issue/ENG-353
+**Generated:** 2026-06-30 18:59 UTC
+**Task file:** `docs/todo-list/tasks/03-ENG-354-render-and-view.output.md`
+**Linear:** https://linear.app/rotate/issue/ENG-354
 
 > This is the sole input file for delivery-build. Read this file only. Do not load any other project files unless explicitly listed in permitted files below.
 
 ---
 
 ## Task summary
-Create the pure, framework-free data core for the todo app: `src/tasks.js`, holding all task operations (add/remove/edit/toggle) and `localStorage` I/O (load/save). Every mutating operation is pure — returns a new array, never mutates its input. No DOM. This module is consumed by the UI layer in later tasks. Build it TDD-first with `test/tasks.test.js`.
+Create the thin DOM/presentation layer that renders tasks from state, plus the bootstrap that loads persisted tasks on startup and paints them. This is **read + render only** — no add/remove/edit/toggle interactions yet (those are ENG-355–358). It serves the **View tasks** user story and establishes the `mountApp` seam later interaction tasks extend, and the per-row `data-id` later tasks bind to.
 
 ---
 
 ## Acceptance criteria
 
-- [ ] `addTask` with non-empty text appends `{id, text, done:false}`; empty/whitespace returns the array unchanged.
-- [ ] `removeTask` returns a new array without the matching id.
-- [ ] `editTask` replaces only the matching task's text, creates no duplicate, leaves `done` unchanged; empty/whitespace text leaves the task unchanged.
-- [ ] `toggleTask` flips only the matching task's `done`.
-- [ ] No operation mutates its input array (verify by identity/reference assertions).
-- [ ] `saveTasks` then `loadTasks` round-trips tasks and their done states.
-- [ ] `loadTasks` returns `[]` when the key is absent or the stored value is invalid JSON.
+**Scenario:** List renders existing tasks
+```gherkin
+Given stored tasks "Buy milk" (not-done) and "Call Sam" (done)
+When the app mounts
+Then "Buy milk" is shown as not-done and "Call Sam" is shown as done
+```
+**Scenario:** Empty list
+```gherkin
+Given no stored tasks
+When the app mounts
+Then the task list is empty and no error occurs
+```
+
+- [ ] Every stored task renders with its text and correct done/not-done state.
+- [ ] An empty task list renders cleanly with no error.
+- [ ] Each rendered row carries its task id (`data-id`) for later per-row actions.
 
 ---
 
 ## Contracts
 Implement exactly. Do not deviate.
 ```typescript
-interface Task { id: string; text: string; done: boolean }
+// src/ui.js
+function renderTasks(tasks: Task[], root: HTMLElement): void;
+//   pure render: DOM is a function of tasks. Clears root, appends one <li> per task.
+//   Each <li>: shows the task text + a done/not-done indicator, carries data-id="<task.id>".
+//   Empty tasks → empty list, no error.
+function mountApp(root: HTMLElement): void;
+//   loads tasks via loadTasks() and calls renderTasks(tasks, root).
+//   Structure so ENG-355–358 can attach event handlers here later.
 
-const STORAGE_KEY = 'todo-list.tasks';
-
-function loadTasks(): Task[];              // [] if key absent or JSON invalid
-function saveTasks(tasks: Task[]): void;   // JSON.stringify → localStorage[STORAGE_KEY]
-
-function addTask(tasks: Task[], text: string): Task[];
-//   trims text; empty/whitespace → returns tasks UNCHANGED
-//   else → [...tasks, { id: crypto.randomUUID(), text: trimmed, done: false }]
-function removeTask(tasks: Task[], id: string): Task[];      // tasks.filter(t => t.id !== id)
-function editTask(tasks: Task[], id: string, text: string): Task[];
-//   trims text; empty → task UNCHANGED; else replace matching task's text only
-function toggleTask(tasks: Task[], id: string): Task[];      // negate matching task's done
+// Task imported from ./tasks.js: { id: string; text: string; done: boolean }
 ```
-If `crypto.randomUUID()` is unavailable in the runtime, add a private `makeId()` behind the same contract — tests assert on `text`/`done`, not the id value.
+
+**Existing module to consume (already on `main`, do NOT modify) — `src/tasks.js` exports:**
+`STORAGE_KEY`, `loadTasks()`, `saveTasks(tasks)`, `addTask`, `removeTask`, `editTask`, `toggleTask`. For this task only `loadTasks` is needed.
+
+**DOM ids already in `index.html` (from ENG-352, do NOT modify):**
+`#new-task-input`, `#add-task-btn`, `#task-list` (the render root).
 
 ---
 
 ## Examples
-**Input:** `addTask([], 'Buy milk')` → **Output:** `[{ id: <uuid>, text: 'Buy milk', done: false }]`
-**Input:** `addTask(existing, '   ')` → **Output:** `existing` (same array reference, unchanged)
-**Input:** `toggleTask([{id:'a',text:'x',done:false}], 'a')` → **Output:** `[{ id:'a', text:'x', done:true }]`
-**Input:** `editTask([{id:'a',text:'x',done:false}], 'a', 'y')` → **Output:** `[{ id:'a', text:'y', done:false }]`
+**Input:** `renderTasks([{id:'a',text:'Buy milk',done:false},{id:'b',text:'Call Sam',done:true}], ul)`
+**Expected output:** `ul` contains two `<li>`s — "Buy milk" not-done, "Call Sam" shown done; each `<li>` has `data-id`.
+**Input:** `renderTasks([], ul)` → **Output:** `ul` empty, no error.
 
 ---
 
 ## Permitted files
-- `src/tasks.js` — create
-- `test/tasks.test.js` — create
+- `src/ui.js` — create
+- `src/main.js` — create
+- `test/ui.test.js` — create
+- `docs/todo-list/features/todo-list/README.md` — create (feature documentation)
+- `test/smoke.test.js` — modify/remove (the scaffold smoke test may now be removed since real tests exist)
 
 ## Protected files
-- `index.html`, `src/styles.css`, `vite.config.js`, `package.json`, `.gitignore`, `test/setup.js`, `test/smoke.test.js` — owned by ENG-352
-- `src/ui.js`, `src/main.js`, `test/ui.test.js` — owned by ENG-354+
-- `docs/**` — workflow artefacts
+- `src/tasks.js` — consumed read-only; do NOT modify (owned by ENG-353)
+- `index.html`, `src/styles.css`, `vite.config.js`, `package.json`, `.gitignore`, `test/setup.js` — owned by ENG-352
+- `test/tasks.test.js` — owned by ENG-353
+- other `docs/**` artefacts
 
 ---
 
 ## External references
-*Pre-verified during shaping-approach.*
+*Pre-verified.*
 
 | System | Documentation URL | MCP |
 |--------|------------------|-----|
-| localStorage (jsdom in tests) | https://github.com/jsdom/jsdom | — |
-| crypto.randomUUID | Web Crypto API | — |
+| jsdom (test DOM) | https://github.com/jsdom/jsdom | — |
+| Vitest | https://vitest.dev/guide/environment | — |
 
-**localStorage (verified):** jsdom implements the Web Storage API natively, so `test/tasks.test.js` can call `localStorage` directly. `test/setup.js` already clears `localStorage` before each test (from ENG-352), so tests start clean.
-**crypto.randomUUID (verified available in this runtime):** Node 22 / jsdom expose `crypto.randomUUID()`. Confirmed present (Node ≥16). Use it for ids; fall back to a private `makeId()` only if a runtime ever lacks it.
+**jsdom/Vitest (verified):** tests run under the jsdom environment; `document`, element creation, and `localStorage` are all available. `test/setup.js` clears `localStorage` before each test. Build a `<ul>` (or use a jsdom-created element) as the render root in tests.
 
 ---
 
 ## Codebase conventions
-No convention files found (`AGENTS.md`, `CLAUDE.md`, `.cursorrules`, `CONVENTIONS.md`, `CONTRIBUTING.md` absent). Apply the established patterns below + the workflow implementation standards.
+No convention files found. Apply established patterns + workflow standards.
 
 ---
 
 ## Codebase patterns
-Established by ENG-352 (now on `main`):
-**Naming:** lowercase file names; ES modules (`import`/`export`, `"type": "module"`). camelCase functions.
-**File structure:** app source in `src/`, tests in `test/` named `*.test.js`. This task adds `src/tasks.js` + `test/tasks.test.js`.
-**Test style:** Vitest with `describe`/`it`/`expect`, `environment: 'jsdom'`. `test/setup.js` runs `localStorage.clear()` in `beforeEach` globally — tests need not clear storage themselves.
-**Component pattern:** container/presentation separation — this module is the **pure data layer** (no DOM, no side effects beyond explicit `localStorage` I/O in `loadTasks`/`saveTasks`). The mutating ops (`addTask` etc.) must be pure functions of their inputs.
-**Utilities to reuse:** none yet — this module is the first reusable utility. Do not recreate storage helpers elsewhere later; consumers import from here.
+Established by ENG-352/353 (on `main`):
+**Naming:** lowercase files, ES modules, camelCase functions.
+**File structure:** app in `src/`, tests in `test/*.test.js`.
+**Test style:** Vitest `describe`/`it`/`expect`, jsdom env, `test/setup.js` clears localStorage per test.
+**Data layer:** `src/tasks.js` is the pure data module — import `loadTasks` from it; never reimplement storage here.
+**Component pattern (apply here):** container/presentation separation —
+  - `renderTasks` is **presentation**: pure function of `(tasks, root) → DOM`, no state, no data loading.
+  - `mountApp` is the **container**: loads data (`loadTasks`) and drives rendering; it is the seam where later tasks add event handlers.
+**Full re-render pattern (from approach):** render by clearing the root and rebuilding from the task array — no surgical DOM diffing.
 
 ---
 
 ## Tooling config
-**Linting:** none configured.
-**Formatting:** none configured — match existing 2-space indentation, single quotes, semicolons (as in `vite.config.js`/`test/setup.js`).
-**TypeScript:** none — plain `.js` ES modules. (Contracts above are types-as-documentation, not enforced.)
+**Linting/Formatting/TypeScript:** none configured. Match existing 2-space, single-quote, semicolon JS style.
 **Test runner:** `npm test` → `vitest run`, jsdom env, `test/setup.js` clears localStorage per test.
 
 ---
 
 ## Feature flag
 **Flag name:** None
-**Default state:** None
-*(Greenfield — feature-flag exemption.)*
+**Default state:** None *(greenfield)*
 
 ---
 
 ## Figma spec
-Not a UI task — pure logic module, no Figma reference.
+No Figma design provided for this project (scope: minimal functional styling, functionality over polish). Render semantic, accessible markup (`<li>` per task; done state conveyed via a control/indicator and a state class or attribute). No pixel spec to match.
 
 ---
 
 ## Conflict check
 **Status:** Clear
-**Details:** Only `todo-list` is active. ENG-353's permitted files (`src/tasks.js`, `test/tasks.test.js`) are new and owned solely by this issue. `src/tasks.js` is protected (read-only) for all later UI issues per the sequence.
+**Details:** Only `todo-list` is active. ENG-354's permitted files are owned solely by this issue. `src/ui.js`/`src/main.js`/`test/ui.test.js`/feature README are created here and (for ui.js/ui.test.js/README) extended by ENG-355–358 in sequence — serialized via blockedBy, so no concurrent writer.
 
 ---
 
 ## TDD reminder
-Tests before implementation. Write `test/tasks.test.js` covering every contract function and edge case (including immutability and the invalid-JSON load case); confirm they fail; then implement `src/tasks.js` minimally to pass; then refactor.
+Tests before implementation. Write `test/ui.test.js` first: render a known task array into a root element and assert the `<li>` text, done-state indicator, and `data-id`; assert empty array renders an empty root with no throw; assert `mountApp` paints persisted tasks (seed via `saveTasks`/`localStorage`, then mount). Confirm red, implement, refactor.
 
 ---
 
 ## Implementation standards reminder
 - Human readable — rewrite if a comment is needed to understand it
 - Follow established patterns above — never introduce a new pattern
-- Functional and composable — small, single-purpose, immutable operations
-- Container/presentation separation — this is the pure data layer; no DOM
+- Functional and composable — `renderTasks` pure; small helpers if needed
+- Container/presentation separation — `renderTasks` presentation, `mountApp` container; never mix
 - No unnecessary comments
-- As simple as possible — no premature abstraction
+- As simple as possible — full re-render, no premature abstraction
+
+---
+
+## Feature documentation (in scope this task)
+Create `docs/todo-list/features/todo-list/README.md` from the feature template. Document: what the todo feature is, the five actions (note add/remove/edit/toggle land in ENG-355–358), localStorage persistence, and how to run/test. It will be updated by each later interaction task.
 
 ---
 
 ## Commit granularity (process note)
-Per updated guidance: commit in meaningful steps, not one squashed commit. Suggested for this task: (1) failing tests for the data module, (2) implement storage I/O (`load`/`save`), (3) implement the pure operations (`add`/`remove`/`edit`/`toggle`). Each commit message ends with the Co-Authored-By trailer.
+Commit in meaningful steps (e.g. (1) failing render tests, (2) `renderTasks`, (3) `mountApp` + `main.js` bootstrap, (4) feature README). Each commit message ends with the Co-Authored-By trailer. Checklist file will be named `03-ENG-354-checklist.output.md`.

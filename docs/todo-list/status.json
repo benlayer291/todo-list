@@ -57,24 +57,32 @@
       "state": "complete",
       "phase": "Delivery",
       "last_write": "context.output.md",
-      "last_write_at": "2026-06-30T18:25:17.809Z",
+      "last_write_at": "2026-06-30T18:45:35.593Z",
       "task_id": null,
-      "completed_at": "2026-06-30T18:25:17.809Z"
+      "completed_at": "2026-06-30T18:45:35.593Z"
     },
     "delivery-build": {
       "state": "in_progress",
       "phase": "Delivery",
-      "last_write": "src/styles.css",
-      "last_write_at": "2026-06-30T18:28:43.432Z",
+      "last_write": "src/tasks.js",
+      "last_write_at": "2026-06-30T18:50:55.662Z",
       "started_at": "2026-06-30T18:28:43.432Z"
     },
     "delivery-checklist": {
       "state": "complete",
       "phase": "Delivery",
-      "last_write": "tasks/ENG-352-checklist.output.md",
-      "last_write_at": "2026-06-30T18:32:11.883Z",
-      "task_id": "ENG-352",
-      "completed_at": "2026-06-30T18:32:11.883Z"
+      "last_write": "tasks/ENG-353-checklist.output.md",
+      "last_write_at": "2026-06-30T18:52:13.082Z",
+      "task_id": "ENG-353",
+      "completed_at": "2026-06-30T18:52:13.082Z"
+    },
+    "review-qa": {
+      "state": "in_progress",
+      "phase": "Review",
+      "last_write": "qa.output.md",
+      "last_write_at": "2026-06-30T18:44:02.272Z",
+      "task_id": null,
+      "started_at": "2026-06-30T18:44:02.272Z"
     }
   },
   "gates": {
@@ -132,6 +140,13 @@
       "at": "2026-06-30T18:32:11.883Z",
       "task_id": "ENG-352",
       "file": "tasks/ENG-352-checklist.output.md"
+    },
+    {
+      "skill": "delivery-checklist",
+      "state": "complete",
+      "at": "2026-06-30T18:52:13.082Z",
+      "task_id": "ENG-353",
+      "file": "tasks/ENG-353-checklist.output.md"
     }
   ]
 }

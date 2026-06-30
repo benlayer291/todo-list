@@ -1,4 +1,4 @@
-import { loadTasks } from './tasks.js';
+import { loadTasks, saveTasks, addTask } from './tasks.js';
 
 function createTaskItem(task) {
   const item = document.createElement('li');
@@ -23,5 +23,19 @@ export function renderTasks(tasks, root) {
 }
 
 export function mountApp(root) {
-  renderTasks(loadTasks(), root);
+  let tasks = loadTasks();
+  renderTasks(tasks, root);
+
+  const form = document.querySelector('#add-task-form');
+  const input = document.querySelector('#new-task-input');
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const next = addTask(tasks, input.value);
+    if (next === tasks) return;
+    tasks = next;
+    saveTasks(tasks);
+    renderTasks(tasks, root);
+    input.value = '';
+  });
 }

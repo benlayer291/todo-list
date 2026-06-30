@@ -246,3 +246,36 @@ describe('edit task interaction', () => {
     expect(loadTasks()[0].text).toBe('Buy milk');
   });
 });
+
+describe('toggle task interaction', () => {
+  it('marks a not-done task as done when its checkbox is toggled', () => {
+    saveTasks([{ id: 'a', text: 'Buy milk', done: false }]);
+    const { root } = makeShell();
+    mountApp(root);
+    root.querySelector('li[data-id="a"] .toggle').click();
+    expect(root.querySelector('li[data-id="a"]').classList.contains('done')).toBe(true);
+    expect(loadTasks()[0].done).toBe(true);
+  });
+
+  it('marks a done task as not-done when its checkbox is toggled', () => {
+    saveTasks([{ id: 'a', text: 'Buy milk', done: true }]);
+    const { root } = makeShell();
+    mountApp(root);
+    root.querySelector('li[data-id="a"] .toggle').click();
+    expect(root.querySelector('li[data-id="a"]').classList.contains('done')).toBe(false);
+    expect(loadTasks()[0].done).toBe(false);
+  });
+
+  it('toggles only the targeted task', () => {
+    saveTasks([
+      { id: 'a', text: 'Buy milk', done: false },
+      { id: 'b', text: 'Call Sam', done: false },
+    ]);
+    const { root } = makeShell();
+    mountApp(root);
+    root.querySelector('li[data-id="a"] .toggle').click();
+    const stored = loadTasks();
+    expect(stored.find((task) => task.id === 'a').done).toBe(true);
+    expect(stored.find((task) => task.id === 'b').done).toBe(false);
+  });
+});

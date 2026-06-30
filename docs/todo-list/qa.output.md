@@ -2,7 +2,7 @@
 
 **Linear:** https://linear.app/rotate/project/todo-list-737f7d905efa
 **Date:** 2026-06-30
-**Run type:** Task-level (latest run: after ENG-353 merged)
+**Run type:** Task-level (latest run: after ENG-354 merged)
 **Tester:** Claude Code
 
 > Living document — updated after every task-level run. ENG-352 (scaffold) and ENG-353 (pure data layer) own no end-to-end PRD user-story scenario; those become testable once the UI tasks (ENG-354+) land. All six story scenarios remain pending.
@@ -25,9 +25,9 @@
 ## Functional QA
 
 ### Story: View tasks
-**Scenario:** List renders existing tasks — **Owned by task:** ENG-354 — pending
-**Scenario:** Empty list — **Owned by task:** ENG-354 — pending
-**Result:** Pending — not tested (ENG-354 not merged)
+**Scenario:** List renders existing tasks — **Owned by task:** ENG-354 — merged ✅
+**Scenario:** Empty list — **Owned by task:** ENG-354 — merged ✅
+**Result:** Pass — verified by `renderTasks`/`mountApp` jsdom tests (text + done state + data-id; empty list renders cleanly) and a screenshot of the rendered app shell. End-to-end reload-restores-tasks confirmed on the read side (`mountApp` loads persisted tasks); write side via UI pending ENG-355+.
 
 ### Story: Add a task
 **Scenario:** Adding a task — **Owned by task:** ENG-355 — pending

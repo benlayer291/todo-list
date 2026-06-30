@@ -1,0 +1,137 @@
+{
+  "project": "Todo list",
+  "slug": "todo-list",
+  "started_at": "2026-06-30T17:19:30.678Z",
+  "current_phase": "Delivery",
+  "current_skill": null,
+  "skills": {
+    "discovery-interview": {
+      "state": "complete",
+      "phase": "Discovery",
+      "last_write": "interview-notes.md",
+      "last_write_at": "2026-06-30T17:19:30.684Z",
+      "task_id": null,
+      "completed_at": "2026-06-30T17:19:30.684Z"
+    },
+    "discovery-brief": {
+      "state": "complete",
+      "phase": "Discovery",
+      "last_write": "brief.output.md",
+      "last_write_at": "2026-06-30T17:22:15.402Z",
+      "task_id": null,
+      "completed_at": "2026-06-30T17:22:15.402Z"
+    },
+    "shaping-scope": {
+      "state": "complete",
+      "phase": "Shaping",
+      "last_write": "scope.output.md",
+      "last_write_at": "2026-06-30T17:27:43.282Z",
+      "task_id": null,
+      "completed_at": "2026-06-30T17:27:43.282Z"
+    },
+    "shaping-prd": {
+      "state": "complete",
+      "phase": "Shaping",
+      "last_write": "prd.output.md",
+      "last_write_at": "2026-06-30T17:57:27.092Z",
+      "task_id": null,
+      "completed_at": "2026-06-30T17:57:27.092Z"
+    },
+    "shaping-approach": {
+      "state": "complete",
+      "phase": "Shaping",
+      "last_write": "approach.output.md",
+      "last_write_at": "2026-06-30T17:57:21.675Z",
+      "task_id": null,
+      "completed_at": "2026-06-30T17:57:21.675Z"
+    },
+    "planning-breakdown": {
+      "state": "in_progress",
+      "phase": "Planning",
+      "last_write": "tasks/07-toggle-task.output.md",
+      "last_write_at": "2026-06-30T18:16:21.503Z",
+      "task_id": null,
+      "started_at": "2026-06-30T18:00:32.254Z"
+    },
+    "delivery-context": {
+      "state": "complete",
+      "phase": "Delivery",
+      "last_write": "context.output.md",
+      "last_write_at": "2026-06-30T18:25:17.809Z",
+      "task_id": null,
+      "completed_at": "2026-06-30T18:25:17.809Z"
+    },
+    "delivery-build": {
+      "state": "in_progress",
+      "phase": "Delivery",
+      "last_write": "src/styles.css",
+      "last_write_at": "2026-06-30T18:28:43.432Z",
+      "started_at": "2026-06-30T18:28:43.432Z"
+    },
+    "delivery-checklist": {
+      "state": "complete",
+      "phase": "Delivery",
+      "last_write": "tasks/ENG-352-checklist.output.md",
+      "last_write_at": "2026-06-30T18:32:11.883Z",
+      "task_id": "ENG-352",
+      "completed_at": "2026-06-30T18:32:11.883Z"
+    }
+  },
+  "gates": {
+    "1": true,
+    "2": true,
+    "3": true,
+    "4": true
+  },
+  "history": [
+    {
+      "skill": "discovery-interview",
+      "state": "complete",
+      "at": "2026-06-30T17:19:30.684Z",
+      "task_id": null,
+      "file": "interview-notes.md"
+    },
+    {
+      "skill": "discovery-brief",
+      "state": "complete",
+      "at": "2026-06-30T17:21:18.485Z",
+      "task_id": null,
+      "file": "brief.output.md"
+    },
+    {
+      "skill": "shaping-scope",
+      "state": "complete",
+      "at": "2026-06-30T17:23:28.163Z",
+      "task_id": null,
+      "file": "scope.output.md"
+    },
+    {
+      "skill": "shaping-prd",
+      "state": "complete",
+      "at": "2026-06-30T17:47:13.149Z",
+      "task_id": null,
+      "file": "prd.output.md"
+    },
+    {
+      "skill": "shaping-approach",
+      "state": "complete",
+      "at": "2026-06-30T17:53:53.943Z",
+      "task_id": null,
+      "file": "approach.output.md"
+    },
+    {
+      "skill": "delivery-context",
+      "state": "complete",
+      "at": "2026-06-30T18:25:17.809Z",
+      "task_id": null,
+      "file": "context.output.md"
+    },
+    {
+      "skill": "delivery-checklist",
+      "state": "complete",
+      "at": "2026-06-30T18:32:11.883Z",
+      "task_id": "ENG-352",
+      "file": "tasks/ENG-352-checklist.output.md"
+    }
+  ]
+}

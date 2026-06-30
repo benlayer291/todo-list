@@ -1,4 +1,4 @@
-import { loadTasks, saveTasks, addTask, removeTask, editTask } from './tasks.js';
+import { loadTasks, saveTasks, addTask, removeTask, editTask, toggleTask } from './tasks.js';
 
 function createTaskItem(task) {
   const item = document.createElement('li');
@@ -48,6 +48,14 @@ export function mountApp(root) {
     if (!event.target.matches('.remove')) return;
     const id = event.target.closest('li').dataset.id;
     tasks = removeTask(tasks, id);
+    saveTasks(tasks);
+    renderTasks(tasks, root);
+  });
+
+  root.addEventListener('change', (event) => {
+    if (!event.target.matches('.toggle')) return;
+    const id = event.target.closest('li').dataset.id;
+    tasks = toggleTask(tasks, id);
     saveTasks(tasks);
     renderTasks(tasks, root);
   });

@@ -81,6 +81,26 @@ happened → recommended skill change.
     should create/transition issues to Todo and set the assignee. Fixed manually
     (assigned all 7 to the human; moved the unstarted ENG-358 Backlog → Todo).
 
+## QA process discipline
+17. **QA findings must become tracked Linear bugs before being actioned.** When a
+    QA run surfaces a failure, the flow is: raise a Linear `[bug]` issue (Gherkin
+    scenario, expected/actual, severity) → sync → action it through delivery —
+    never silently patch. The skill already says this; reinforce it so QA failures
+    aren't dismissed by quietly fixing the test or the code ad hoc. (Caveat applied
+    in practice: distinguish a genuine product bug from a flaw in the QA harness
+    itself — only product defects become Linear bugs; harness bugs are fixed in the
+    harness. Here the project-level E2E "failure" was a driver-script flaw, not a
+    product defect, so no bug issue was raised — confirmed by the unit suite.)
+
+## Branch protection / PR-only
+18. **Never commit directly to `main`.** All changes must go through a reviewed PR
+    — including `review-qa` and `review-retro` doc updates (I attempted to commit
+    project-level QA artefacts straight to `main`). → The workflow should state
+    explicitly that every change to `main`, code or docs, is via PR; and ideally
+    recommend enabling branch protection on `main`. The review skills need a
+    delivery-style "branch → commit → PR" step for their artefacts, not a direct
+    commit.
+
 ## Sequencing artifacts
 13. **ENG-352 `index.html` references `src/main.js` (owned by ENG-354)** → so
     `npm run build` fails between ENG-352 and ENG-354 (dev + tests still pass).

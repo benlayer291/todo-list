@@ -2,10 +2,10 @@
 
 **Linear:** https://linear.app/rotate/project/todo-list-737f7d905efa
 **Date:** 2026-06-30
-**Run type:** Task-level (latest run: after ENG-357 merged)
+**Run type:** Project-level (all 7 tasks merged) — final regression + E2E
 **Tester:** Claude Code
 
-> Living document — updated after every task-level run. ENG-352 (scaffold) and ENG-353 (pure data layer) own no end-to-end PRD user-story scenario; those become testable once the UI tasks (ENG-354+) land. All six story scenarios remain pending.
+> Living document. All 7 issues (ENG-352–358) merged. This is the project-level run: every PRD Gherkin scenario verified, plus a full regression (unit suite) and a real-browser end-to-end pass of all five actions with reload persistence.
 
 ---
 
@@ -43,9 +43,9 @@
 **Result:** Pass — verified by edit-interaction jsdom tests (dblclick→input; commit on blur/Enter updates in place, no duplicate, `done` preserved, persisted; empty commit unchanged; Escape cancels) and a real-browser CDP screenshot ("Buy milk" → "Buy oat milk").
 
 ### Story: Toggle a task done / not-done
-**Scenario:** Marking a not-done task as done — **Owned by task:** ENG-358 — pending
-**Scenario:** Marking a done task as not-done — **Owned by task:** ENG-358 — pending
-**Result:** Pending — not tested (ENG-358 not merged)
+**Scenario:** Marking a not-done task as done — **Owned by task:** ENG-358 — merged ✅
+**Scenario:** Marking a done task as not-done — **Owned by task:** ENG-358 — merged ✅
+**Result:** Pass — verified by toggle-interaction jsdom tests (both directions, only-targeted, persisted) and the real-browser E2E (Call Sam toggled done, survived reload).
 
 ### Story: Persistence across sessions
 **Scenario:** Tasks survive reload — **Owned by:** ENG-353 (storage I/O) + ENG-354 (load/render) + ENG-355 (add writes) — merged ✅ for the add path
@@ -58,8 +58,29 @@ Skipped — non-UI-design project (no Figma spec; minimal functional styling onl
 
 ---
 
-## Regression check
-N/A for task-level. (First task; no prior passing scenarios to regress.)
+## Regression check (project-level)
+Full unit suite re-run on merged `main`: **40/40 pass** (17 `tasks` + 23 `ui`). Every scenario that passed in a prior task-level run still passes — no regressions.
+
+| Scenario | First passed in | Current result |
+|----------|-----------------|----------------|
+| View — renders existing / empty | ENG-354 | Pass |
+| Add — adds not-done / rejects empty | ENG-355 | Pass |
+| Remove — removes from list + storage | ENG-356 | Pass |
+| Edit — in-place, no dup, empty-reject | ENG-357 | Pass |
+| Toggle — both directions, only-targeted | ENG-358 | Pass |
+| Persistence — survives reload | ENG-353/355+ | Pass |
+
+## Project-level end-to-end (real browser, via CDP)
+Exercised all five actions against the production build, then **reloaded** to confirm persistence:
+1. Added "Buy milk", "Call Sam", "Book dentist".
+2. Toggled "Call Sam" → done.
+3. Edited "Buy milk" → "Buy oat milk" (double-click inline edit).
+4. Removed "Book dentist".
+5. Reloaded the page.
+
+**After reload, rendered state:** `Buy oat milk` (not-done) · `Call Sam` (done); `Book dentist` absent — exactly as expected. All five actions + localStorage persistence confirmed end-to-end. (Screenshot in run artefacts.)
+
+**QA-harness note:** the first E2E driver aborted mid-script (helper matched rows by `textContent`, which breaks once the edit swaps the text span for an input) — a flaw in the test driver, **not** a product defect; no Linear bug raised. Corrected driver passed cleanly.
 
 ---
 
@@ -73,14 +94,17 @@ N/A for task-level. (First task; no prior passing scenarios to regress.)
 
 ## Overall result
 
-**Status:** ✅ Pass
+**Status:** ✅ Pass (project-level)
+**Scenarios tested:** 10 / 10 PRD Gherkin scenarios (6 stories) — all Pass
+**Regression:** 40/40 unit tests pass on `main`; no regressions
+**End-to-end:** all five actions + reload persistence verified in a real browser
 **Bugs raised:** 0 Critical, 0 High, 0 Medium, 0 Low
-**Blocking next task:** No
+**Blocking retro:** No
 
 ---
 
-**Human sign-off required before proceeding:** Task-level QA has no checkpoint; next task may begin.
-**Sign-off status:** N/A (task-level)
+**Human sign-off required before proceeding (Gate 9):** Yes
+**Sign-off status:** Pending
 **Approved on:** —
 
 ---

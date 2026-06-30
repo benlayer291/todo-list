@@ -2,8 +2,8 @@
   "project": "Todo list",
   "slug": "todo-list",
   "started_at": "2026-06-30T17:19:30.678Z",
-  "current_phase": "Delivery",
-  "current_skill": null,
+  "current_phase": "Review",
+  "current_skill": "review-qa",
   "skills": {
     "discovery-interview": {
       "state": "complete",
@@ -79,7 +79,7 @@
       "state": "in_progress",
       "phase": "Review",
       "last_write": "qa.output.md",
-      "last_write_at": "2026-06-30T19:47:40.346Z",
+      "last_write_at": "2026-06-30T20:03:08.351Z",
       "task_id": null,
       "started_at": "2026-06-30T18:44:02.272Z"
     },
